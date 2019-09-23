@@ -28,6 +28,5 @@ class User
     static function get(){
         $db = new database("phpdb");
         return $db ->query("SELECT * FROM users WHERE id=" . $_SESSION["user"])[0];
-
     }
 }
