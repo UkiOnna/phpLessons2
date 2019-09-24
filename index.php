@@ -5,6 +5,37 @@ include_once "AutoLad.php";
 use classes\database;
 use classes\User;
 
+
+if ($_GET["path"]) {
+    $dir = $_GET["path"];
+} else {
+    $dir = __DIR__;
+}
+
+$dir = realpath($dir);
+
+echo "$dir<hr />";
+
+
+
+
+if (is_dir($dir)) {
+    foreach (scandir($dir) as $item) {
+        $path = realpath($dir . DIRECTORY_SEPARATOR . $item);
+        $shortPath = realpath($dir . DIRECTORY_SEPARATOR);
+        echo "<a href='/?path=" . realpath($dir . DIRECTORY_SEPARATOR . $item) . "'>$item</a>" . "<form action=\"/editText.php\"  method=\"GET\"> 
+<input type=\"text\" placeholder=\"rename\" class=\"form-control\" name=\"rename\" >
+ <input type=\"hidden\" placeholder=\"path\" class=\"form-control\" name=\"path\" value=$path ><br> 
+<input type=\"submit\" name=\"button\" value=\"Rename\"> <input type=\"submit\" name=\"button\" value=\"Delete\"></form>";
+        echo "<br />";
+    }
+} else if (is_file($dir)) {
+    foreach (file($dir) as $line)
+        echo "<p>" . htmlspecialchars($line) . "</p>";
+} else {
+    echo "Error";
+}
+
 //$db=new database("phpdb");
 //echo $db->query("SELECT * FROM users");
 //User::login('uki',"");
@@ -30,38 +61,6 @@ use classes\User;
 /////////////////////////v1
 //?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.css">
-    <link rel="stylesheet" href="css/main.css">
-    <title>MyPage</title>
-</head>
-<body class="">
-<form action="./editText.php" method="get">
-    <div>
-    <input type="text" placeholder="filename" class="form-control" name="file" required>
-    </div>
-
-    <div>
-        <select name="select">
-            <option value="read" selected>Read</option>
-            <option value="rewrite">Rewrite</option>
-            <option value="append">Append</option>
-        </select>
-    </div>
-
-    <div>
-        <textarea name="text"></textarea>
-    </div>
-    <button class="btn btn-block btn-dark" type="submit">Enter</button>
-
-</form>
 
 <?php
 //    if(User::isLogin()) :
